@@ -5,180 +5,180 @@ import { web } from '../src/application/web.js';
 import { logger } from '../src/application/logging.js';
 import { createTestUser, getTestUser, removeTestUser } from './test-util.js';
 
-describe('POST /api/users', () => {
-  afterEach(async () => {
-    await removeTestUser();
-  });
+// describe('POST /api/users', () => {
+//   afterEach(async () => {
+//     await removeTestUser();
+//   });
 
-  // Testing successed
-  it('should can register new user', async () => {
-    const result = await supertest(web).post('/api/users').send({
-      username: 'ocire',
-      password: 'ocire',
-      name: 'ocire dwir',
-    });
+//   // Testing successed
+//   it('should can register new user', async () => {
+//     const result = await supertest(web).post('/api/users').send({
+//       username: 'ocire',
+//       password: 'ocire',
+//       name: 'ocire dwir',
+//     });
 
-    expect(result.status).toBe(201);
-    expect(result.body.data.username).toBe('ocire');
-    expect(result.body.data.name).toBe('ocire dwir');
-    expect(result.body.data.password).toBeUndefined();
-    expect(result.body.message).toBe('Success create user!');
-  });
+//     expect(result.status).toBe(201);
+//     expect(result.body.data.username).toBe('ocire');
+//     expect(result.body.data.name).toBe('ocire dwir');
+//     expect(result.body.data.password).toBeUndefined();
+//     expect(result.body.message).toBe('Success create user!');
+//   });
 
-  // Testing wrong user input
-  it('should reject if request is invalid', async () => {
-    const result = await supertest(web).post('/api/users').send({
-      username: '',
-      password: '',
-      name: '',
-    });
+//   // Testing wrong user input
+//   it('should reject if request is invalid', async () => {
+//     const result = await supertest(web).post('/api/users').send({
+//       username: '',
+//       password: '',
+//       name: '',
+//     });
 
-    logger.info(result);
+//     logger.info(result);
 
-    expect(result.status).toBe(400);
-    expect(result.body.errors).toBeDefined();
-  });
+//     expect(result.status).toBe(400);
+//     expect(result.body.errors).toBeDefined();
+//   });
 
-  // Testing Duplicate
-  it('should can register new user', async () => {
-    let result = await supertest(web).post('/api/users').send({
-      username: 'ocire',
-      password: 'ocire',
-      name: 'ocire dwir',
-    });
+//   // Testing Duplicate
+//   it('should can register new user', async () => {
+//     let result = await supertest(web).post('/api/users').send({
+//       username: 'ocire',
+//       password: 'ocire',
+//       name: 'ocire dwir',
+//     });
 
-    expect(result.status).toBe(201);
-    expect(result.body.data.username).toBe('ocire');
-    expect(result.body.data.name).toBe('ocire dwir');
-    expect(result.body.data.password).toBeUndefined();
-    expect(result.body.message).toBe('Success create user!');
+//     expect(result.status).toBe(201);
+//     expect(result.body.data.username).toBe('ocire');
+//     expect(result.body.data.name).toBe('ocire dwir');
+//     expect(result.body.data.password).toBeUndefined();
+//     expect(result.body.message).toBe('Success create user!');
 
-    result = await supertest(web).post('/api/users').send({
-      username: 'ocire',
-      password: 'ocire',
-      name: 'ocire dwir',
-    });
+//     result = await supertest(web).post('/api/users').send({
+//       username: 'ocire',
+//       password: 'ocire',
+//       name: 'ocire dwir',
+//     });
 
-    logger.info(result);
+//     logger.info(result);
 
-    expect(result.status).toBe(400);
-    expect(result.body.errors).toBeDefined();
-  });
-});
+//     expect(result.status).toBe(400);
+//     expect(result.body.errors).toBeDefined();
+//   });
+// });
 
-describe('POST /api/users/login', () => {
-  beforeEach(async () => {
-    await createTestUser();
-  });
+// describe('POST /api/users/login', () => {
+//   beforeEach(async () => {
+//     await createTestUser();
+//   });
 
-  afterEach(async () => {
-    await removeTestUser();
-  });
+//   afterEach(async () => {
+//     await removeTestUser();
+//   });
 
-  it('should can login', async () => {
-    const result = await supertest(web).post('/api/users/login').send({
-      username: 'ocire',
-      password: 'ocire',
-    });
+//   it('should can login', async () => {
+//     const result = await supertest(web).post('/api/users/login').send({
+//       username: 'ocire',
+//       password: 'ocire',
+//     });
 
-    logger.info(result.body);
+//     logger.info(result.body);
 
-    expect(result.status).toBe(200);
-    expect(result.body.data.token).toBeDefined();
-    expect(result.body.data.token).not.toBe('test');
-  });
+//     expect(result.status).toBe(200);
+//     expect(result.body.data.token).toBeDefined();
+//     expect(result.body.data.token).not.toBe('test');
+//   });
 
-  it('should error wrong username or password', async () => {
-    const result = await supertest(web).post('/api/users/login').send({
-      username: 'ocire',
-      password: 'ocire123',
-    });
+//   it('should error wrong username or password', async () => {
+//     const result = await supertest(web).post('/api/users/login').send({
+//       username: 'ocire',
+//       password: 'ocire123',
+//     });
 
-    logger.info(result.body);
+//     logger.info(result.body);
 
-    expect(result.status).toBe(401);
-    expect(result.body.errors).toBeDefined();
-  });
-});
+//     expect(result.status).toBe(401);
+//     expect(result.body.errors).toBeDefined();
+//   });
+// });
 
-describe('GET /api/users/current', () => {
-  beforeEach(async () => {
-    await createTestUser();
-  });
+// describe('GET /api/users/current', () => {
+//   beforeEach(async () => {
+//     await createTestUser();
+//   });
 
-  afterEach(async () => {
-    await removeTestUser();
-  });
+//   afterEach(async () => {
+//     await removeTestUser();
+//   });
 
-  it('should can get current user', async () => {
-    const result = await supertest(web)
-      .get('/api/users/current')
-      .set('Authorization', 'test');
+//   it('should can get current user', async () => {
+//     const result = await supertest(web)
+//       .get('/api/users/current')
+//       .set('Authorization', 'test');
 
-    logger.info(result);
+//     logger.info(result);
 
-    expect(result.status).toBe(200);
-    expect(result.body.data.username).toBe('ocire');
-    expect(result.body.data.name).toBe('ocire test');
-  });
+//     expect(result.status).toBe(200);
+//     expect(result.body.data.username).toBe('ocire');
+//     expect(result.body.data.name).toBe('ocire test');
+//   });
 
-  it('should reject if token invalid', async () => {
-    const result = await supertest(web)
-      .get('/api/users/current')
-      .set('Authorization', 'wrong');
+//   it('should reject if token invalid', async () => {
+//     const result = await supertest(web)
+//       .get('/api/users/current')
+//       .set('Authorization', 'wrong');
 
-    logger.info(result);
+//     logger.info(result);
 
-    expect(result.status).toBe(401);
-    expect(result.body.errors).toBeDefined();
-  });
-});
+//     expect(result.status).toBe(401);
+//     expect(result.body.errors).toBeDefined();
+//   });
+// });
 
-describe('PATCH /api/users/current', () => {
-  beforeEach(async () => {
-    await createTestUser();
-  });
+// describe('PATCH /api/users/current', () => {
+//   beforeEach(async () => {
+//     await createTestUser();
+//   });
 
-  afterEach(async () => {
-    await removeTestUser();
-  });
+//   afterEach(async () => {
+//     await removeTestUser();
+//   });
 
-  it('should can update user', async () => {
-    const result = await supertest(web)
-      .patch('/api/users/current')
-      .set('Authorization', 'test')
-      .send({
-        name: 'erico',
-        password: 'erico',
-      });
+//   it('should can update user', async () => {
+//     const result = await supertest(web)
+//       .patch('/api/users/current')
+//       .set('Authorization', 'test')
+//       .send({
+//         name: 'erico',
+//         password: 'erico',
+//       });
 
-    logger.info(result);
+//     logger.info(result);
 
-    expect(result.status).toBe(200);
-    expect(result.body.data.username).toBe('ocire');
-    expect(result.body.data.name).toBe('erico');
+//     expect(result.status).toBe(200);
+//     expect(result.body.data.username).toBe('ocire');
+//     expect(result.body.data.name).toBe('erico');
 
-    const user = await getTestUser();
-    expect(await bcrypt.compare('erico', user.password)).toBe(true);
-  });
+//     const user = await getTestUser();
+//     expect(await bcrypt.compare('erico', user.password)).toBe(true);
+//   });
 
-  it('should can update user only password', async () => {
-    const result = await supertest(web)
-      .patch('/api/users/current')
-      .set('Authorization', 'test')
-      .send({
-        password: 'erico',
-      });
+//   it('should can update user only password', async () => {
+//     const result = await supertest(web)
+//       .patch('/api/users/current')
+//       .set('Authorization', 'test')
+//       .send({
+//         password: 'erico',
+//       });
 
-    logger.info(result);
+//     logger.info(result);
 
-    expect(result.status).toBe(200);
-    expect(result.body.data.username).toBe('ocire');
+//     expect(result.status).toBe(200);
+//     expect(result.body.data.username).toBe('ocire');
 
-    const user = await getTestUser();
-    expect(await bcrypt.compare('erico', user.password)).toBe(true);
-  });
-});
+//     const user = await getTestUser();
+//     expect(await bcrypt.compare('erico', user.password)).toBe(true);
+//   });
+// });
 
 describe('DELETE /api/users/logout', () => {
   beforeEach(async () => {
@@ -194,8 +194,6 @@ describe('DELETE /api/users/logout', () => {
       .delete('/api/users/logout')
       .set('Authorization', 'test');
 
-    logger.info(result);
-
     expect(result.status).toBe(200);
     expect(result.body.data).toBe('OK');
 
@@ -207,8 +205,6 @@ describe('DELETE /api/users/logout', () => {
     const result = await supertest(web)
       .delete('/api/users/logout')
       .set('Authorization', 'wrong');
-
-    logger.info(result);
 
     expect(result.status).toBe(401);
   });

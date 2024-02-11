@@ -28,4 +28,54 @@ const getTestUser = async () => {
   });
 };
 
-export { removeTestUser, createTestUser, getTestUser };
+const removeAllTestContact = async () => {
+  await prismaClient.contact.deleteMany({
+    where: {
+      username: 'ocire',
+    },
+  });
+};
+
+const createTestContact = async () => {
+  await prismaClient.contact.create({
+    data: {
+      username: 'ocire',
+      first_name: 'erico dwi',
+      last_name: 'rsd',
+      email: 'erico@gmail.com',
+      phone: '08123981',
+    },
+  });
+};
+
+const createManyTestContact = async () => {
+  for (let i = 0; i < 15; i++) {
+    await prismaClient.contact.create({
+      data: {
+        username: `ocire`,
+        first_name: `erico dwi ${i}`,
+        last_name: `rsd ${i}`,
+        email: `erico${i}@gmail.com`,
+        phone: `08123981 ${i}`,
+      },
+    });
+  }
+};
+
+const getTestContact = async () => {
+  return prismaClient.contact.findFirst({
+    where: {
+      username: 'ocire',
+    },
+  });
+};
+
+export {
+  removeTestUser,
+  createTestUser,
+  getTestUser,
+  removeAllTestContact,
+  createTestContact,
+  createManyTestContact,
+  getTestContact,
+};
